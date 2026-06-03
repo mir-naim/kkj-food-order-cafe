@@ -7,6 +7,7 @@
 
 
 import axios from "axios";
+import api from "../utils/api";
 
 import {
   CREATE_ORDER_REQUEST,
@@ -42,7 +43,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post("/api/v1/order/new", order, config);
+    const { data } = await api.post("/api/v1/order/new", order, config);
 
     dispatch({
       type: CREATE_ORDER_SUCCESS,
@@ -61,7 +62,7 @@ export const myOrders = () => async (dispatch) => {
   try {
     dispatch({ type: MY_ORDERS_REQUEST });
 
-    const { data } = await axios.get("/api/v1/orders/me");
+    const { data } = await api.get("/api/v1/orders/me");
 
     dispatch({
       type: MY_ORDERS_SUCCESS,
@@ -80,7 +81,7 @@ export const getOrderDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: ORDER_DETAILS_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/order/${id}`);
+    const { data } = await api.get(`/api/v1/order/${id}`);
 
     dispatch({
       type: ORDER_DETAILS_SUCCESS,
@@ -100,7 +101,7 @@ export const allOrders = () => async (dispatch) => {
   try {
     dispatch({ type: ALL_ORDERS_REQUEST });
 
-    const { data } = await axios.get(`/api/v1/admin/orders`);
+    const { data } = await api.get(`/api/v1/admin/orders`);
 
     dispatch({
       type: ALL_ORDERS_SUCCESS,
@@ -125,7 +126,7 @@ export const updateOrder = (id, orderData) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.put(`/api/v1/admin/order/${id}`, orderData, config);
+    const { data } = await api.put(`/api/v1/admin/order/${id}`, orderData, config);
 
     dispatch({
       type: UPDATE_ORDERS_SUCCESS,
@@ -145,7 +146,7 @@ export const deleteOrder = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: DELETE_ORDERS_REQUEST });
 
-    const { data } = await axios.delete(`/api/v1/admin/order/${id}`);
+    const { data } = await api.delete(`/api/v1/admin/order/${id}`);
 
     dispatch({
       type: DELETE_ORDERS_SUCCESS,

@@ -7,7 +7,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Note the addition of "Routes".
 import { useEffect, useState } from "react";
 import axios from "axios";
-import api from "../utils/api";
+import api from "./utils/api";
 import { useSelector } from "react-redux";
 
 //Main page imports

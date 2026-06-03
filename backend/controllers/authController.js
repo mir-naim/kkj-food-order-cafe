@@ -191,11 +191,11 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) =>{
 
   //update avatar 
 
-  if(req.body.avatar !== ''){
+  if (req.body.avatar) {
     const user = await User.findById(req.user.id)
 
     const image_id = user.avatar.public_id;
-    const res = await cloudinary.v2.uploader.destroy(image_id);
+    const resultDestroy = await cloudinary.v2.uploader.destroy(image_id);
 
     const result = await cloudinary.v2.uploader.upload(req.body.avatar,{
 
@@ -233,9 +233,11 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     httpOnly: true,
   });
 
-  res.status(200).json({
-    success: true,
-    message: "Logged out",
+  res.cookie("token", null, {
+  expires: new Date(Date.now()),
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
   });
 });
 

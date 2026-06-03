@@ -7,6 +7,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; // Note the addition of "Routes".
 import { useEffect, useState } from "react";
 import axios from "axios";
+import api from "../utils/api";
 import { useSelector } from "react-redux";
 
 //Main page imports
@@ -61,7 +62,7 @@ function App() {
 
     async function getStripeApiKey() {
       try {
-        const { data } = await axios.get("/api/v1/stripeapi");
+        const { data } = await api.get("/api/v1/stripeapi");
         setStripeApiKey(data.stripeApiKey);
       } catch (error) {
         if (error.response && error.response.status === 401) {

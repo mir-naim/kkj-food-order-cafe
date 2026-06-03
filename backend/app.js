@@ -6,6 +6,7 @@
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const dotenv = require('dotenv');
 
 const cookieParser = require('cookie-parser');
@@ -20,6 +21,14 @@ const errorMiddleware = require('./middlewares/errors')
 dotenv.config({path :'backend/config/config.env'})
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
+
 app.use(bodyparser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(fileUpload());

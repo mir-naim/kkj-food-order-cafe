@@ -37,6 +37,14 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
+// 👇 ADD THIS HERE
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Backend Running",
+  });
+});
+
 const server = app.listen(process.env.PORT,() =>{
     console.log(`Server stated on PORT : ${process.env.PORT} in ${process.env.NODE_ENV} mode.`)
 

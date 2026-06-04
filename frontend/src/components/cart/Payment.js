@@ -91,28 +91,26 @@ const Payment = () => {
         document.querySelector("#pay_btn").disabled = false;
       } else {
         //The payment is processed or not
-        if (result.paymentIntent.status === "succeeded") {
-          // Payment succeeded, create a new order
-          const orderData = {
-            orderItems: cartItems,
-            shippingInfo,
-            paymentInfo: {
-              id: result.paymentIntent.id,
-              status: result.paymentIntent.status,
-            },
-            itemsPrice: orderInfo.itemsPrice,
-            taxPrice: orderInfo.taxPrice,
-            shippingPrice: orderInfo.shippingPrice,
-            totalPrice: orderInfo.totalPrice,
-          };
-
-          // Dispatch the action to create the new order
-         await dispatch(createOrder(orderData));
-          // Show a success message to the user
-          alert.success("Payment succeeded! Your order has been placed.");
-
-          // Navigate to the success page or any other appropriate page
-          navigate("/success");
+            if (result.paymentIntent.status === "succeeded") {
+      const orderData = {
+        orderItems: cartItems,
+        shippingInfo,
+        paymentInfo: {
+          id: result.paymentIntent.id,
+          status: result.paymentIntent.status,
+        },
+        itemsPrice: orderInfo.itemsPrice,
+        taxPrice: orderInfo.taxPrice,
+        shippingPrice: orderInfo.shippingPrice,
+        totalPrice: orderInfo.totalPrice,
+      };
+    
+      await dispatch(createOrder(orderData));
+    
+      alert.success("Payment succeeded! Your order has been placed.");
+    
+      navigate("/success");
+    }
         } else {
           alert.error("There is some issue while payment processing");
         }

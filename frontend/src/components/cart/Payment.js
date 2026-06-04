@@ -107,8 +107,7 @@ const Payment = () => {
           };
 
           // Dispatch the action to create the new order
-          dispatch(createOrder(orderData));
-
+         await dispatch(createOrder(orderData));
           // Show a success message to the user
           alert.success("Payment succeeded! Your order has been placed.");
 

@@ -23,6 +23,7 @@ import {
   CardCvcElement,
 } from "@stripe/react-stripe-js";
 import axios from "axios";
+import api from "../../utils/api";
 import { useAlert } from "react-alert";
 
 const options = {
@@ -68,7 +69,7 @@ const Payment = () => {
         },
       };
 
-      res = await axios.post("/api/v1/payment/process", paymentData, config);
+      res = await api.post("/api/v1/payment/process", paymentData, config);
 
       const clientSecret = res.data.client_secret;
       if (!stripe || !elements) {

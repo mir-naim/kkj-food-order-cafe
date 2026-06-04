@@ -78,7 +78,17 @@ const OrderDetails = () => {
 
               <h4 className="my-4">Payment</h4>
               <p className={isPaid ? "greenColor" : "redColor"}>
-                <b>{isPaid ? "PAID" : "NOT PAID"}</b>
+                <b>
+                  {paymentInfo?.status === "succeeded"
+                    ? "PAID"
+                    : paymentInfo?.status === "CASH PAID"
+                    ? "CASH PAID"
+                    : paymentInfo?.status === "COD"
+                    ? "CASH ON DELIVERY"
+                    : paymentInfo?.status === "CANCELLED"
+                    ? "CANCELLED"
+                    : "NOT PAID"}
+              </b>
               </p>
 
               <h4 className="my-4">Order Status:</h4>

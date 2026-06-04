@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "./CheckoutSteps";
 import axios from "axios";
-
+import api from "../../utils/api";
 
 
 const ConfirmOrder = () => {
@@ -57,7 +57,7 @@ const ConfirmOrder = () => {
     };
 
     try {
-      await axios.post("/api/v1/order/new", order);
+      await api.post("/api/v1/order/new", order);
 
       navigate("/success");
     } catch (error) {

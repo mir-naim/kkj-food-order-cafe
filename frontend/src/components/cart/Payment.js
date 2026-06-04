@@ -57,73 +57,74 @@ const Payment = () => {
   };
 
   const submitHandler = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    document.querySelector("#pay_btn").disabled = true;
-    let res;
+  document.querySelector("#pay_btn").disabled = true;
 
-    try {
-      const config = {
+  try {
+    const paymentData = {
+      amount: Math.round(orderInfo.totalPrice * 100),
+    };
+
+    const { data } = await api.post(
+      "/api/v1/payment/process",
+      paymentData,
+      {
         headers: {
           "Content-Type": "application/json",
         },
+      }
+    );
+
+    const clientSecret = data.client_secret;
+
+    if (!stripe || !elements) return;
+
+    const result = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardNumberElement),
+        billing_details: {
+          name: user.name,
+          email: user.email,
+        },
+      },
+    });
+
+    if (result.error) {
+      alert.error(result.error.message);
+      document.querySelector("#pay_btn").disabled = false;
+      return;
+    }
+
+    if (result.paymentIntent.status === "succeeded") {
+      const orderData = {
+        orderItems: cartItems,
+        shippingInfo,
+        paymentInfo: {
+          id: result.paymentIntent.id,
+          status: result.paymentIntent.status,
+        },
+        itemsPrice: orderInfo.itemsPrice,
+        taxPrice: orderInfo.taxPrice,
+        shippingPrice: orderInfo.shippingPrice,
+        totalPrice: orderInfo.totalPrice,
       };
 
-      res = await api.post("/api/v1/payment/process", paymentData, config);
+      await dispatch(createOrder(orderData));
 
-      const clientSecret = res.data.client_secret;
-      if (!stripe || !elements) {
-        return;
-      }
+      alert.success("Payment succeeded! Your order has been placed.");
 
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardNumberElement),
-          billing_details: {
-            name: user.name,
-            email: user.email,
-          },
-        },
-      });
-
-      if (result.error) {
-        alert.error(result.error.message);
-        document.querySelector("#pay_btn").disabled = false;
-      } else {
-        //The payment is processed or not
-             //The payment is processed or not
-        if (result.paymentIntent.status === "succeeded") {
-          // Payment succeeded, create a new order
-          const orderData = {
-            orderItems: cartItems,
-            shippingInfo,
-            paymentInfo: {
-              id: result.paymentIntent.id,
-              status: result.paymentIntent.status,
-            },
-            itemsPrice: orderInfo.itemsPrice,
-            taxPrice: orderInfo.taxPrice,
-            shippingPrice: orderInfo.shippingPrice,
-            totalPrice: orderInfo.totalPrice,
-          };
-
-          // Dispatch the action to create the new order
-         await dispatch(createOrder(orderData));
-          // Show a success message to the user
-          alert.success("Payment succeeded! Your order has been placed.");
-
-          // Navigate to the success page or any other appropriate page
-          navigate("/success");
+      navigate("/success");
+    } else {
+      alert.error("Payment not completed");
     }
-        } else {
-          alert.error("There is some issue while payment processing");
-        }
-      }
-    } catch (error) {
-      document.querySelector("#pay_btn").disabled = false;
-      alert.error(error.response.data.message);
-    }
-  };
+
+  } catch (error) {
+    console.log(error);
+    document.querySelector("#pay_btn").disabled = false;
+    alert.error(error?.response?.data?.message || "Payment error");
+  }
+};
 
   return (
     <Fragment>

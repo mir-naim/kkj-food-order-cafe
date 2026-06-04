@@ -69,25 +69,24 @@ const ProcessOrder = () => {
 
   const updateOrderHandler = (id) => {
 
-    const formData = new FormData();
+  const orderData = {
+    status
+  };
 
-    formData.set("status", status);
+  if (paymentInfo?.status === "COD") {
 
-    // Cash on Delivery Payment Update
-    if (paymentInfo && paymentInfo.status === "COD") {
-
-      if (cashPayment === "Yes") {
-        formData.set("paymentStatus", "CASH PAID");
-      }
-
-      if (cashPayment === "No") {
-        formData.set("paymentStatus", "CANCELLED");
-        formData.set("status", "Cancelled");
-      }
+    if (cashPayment === "Yes") {
+      orderData.paymentStatus = "CASH PAID";
     }
 
-    dispatch(updateOrder(id, formData));
-  };
+    if (cashPayment === "No") {
+      orderData.paymentStatus = "CANCELLED";
+      orderData.status = "Cancelled";
+    }
+  }
+
+  dispatch(updateOrder(id, orderData));
+};
 
   const updateCashPaymentHandler = (id) => {
 

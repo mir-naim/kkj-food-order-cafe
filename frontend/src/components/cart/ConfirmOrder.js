@@ -72,7 +72,7 @@ const ConfirmOrder = () => {
 
       <div className="row d-flex justify-content-between">
         <div className="col-12 col-lg-8 mt-5 order-confirm">
-          <h4 className="mb-3">Shipping Info</h4>
+          <h4 className="mb-3">User Info</h4>
           <p>
             <b>Name:</b>
             {user && user.name}

@@ -147,8 +147,8 @@ const Cart = () => {
                 </p>
                 <p>
                   Est. total:{" "}
-                  <span className="order-summary-values">{cartItems.reduce(
-                      (acc, item) => acc + item.quantity * item.price, 0).toFixed(2)} RM</span>
+                  <span className="order-summary-values">RM{cartItems.reduce(
+                      (acc, item) => acc + item.quantity * item.price, 0).toFixed(2)}</span>
                 </p>
 
                 <hr />

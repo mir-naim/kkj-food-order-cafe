@@ -17,7 +17,7 @@ const Footer = () => {
               <div>
                 <br />
                 <p>
-                  Cafe KKJ is a food ordering website enhances dining at College Name through fast, technology-driven food ordering solutions. It streamlines order processing, reduces wait times, and improves customer satisfaction.
+                  Cafe KKJ is a cozy cafe dedicated to serving quality food and beverages in a welcoming atmosphere. Our goal is to provide great taste, friendly service, and a memorable dining experience for every customer.
                 </p>
               </div>
             </div>
@@ -27,16 +27,15 @@ const Footer = () => {
 
               <ul className="list-unstyled">
                 <li className="mb-3">
-                  <i className="fas fa-home me-2"></i>Jalan Teknologi 5, Taman
-                  Teknologi Malaysia, 57000 Kuala Lumpur, Wilayah Persekutuan
-                  Kuala Lumpur
+                  <i className="fas fa-home me-2"></i>Jalan Jumaat, Kampung Ungku
+                  Mohsin, 80350 Johor Bahru, Johor Darul Ta'zim, Malaysia
                 </li>
                 <li className="mb-3">
                   <i className="fas fa-envelope me-2"></i>
                   contact@cafekkj.com
                 </li>
                 <li className="mb-3">
-                  <i className="fas fa-phone me-2"></i>+60 146 566 000
+                  <i className="fas fa-phone me-2"></i>+60 132445124
                 </li>
               </ul>
             </div>
@@ -48,14 +47,14 @@ const Footer = () => {
                 <tbody className="fw-normal">
                   <tr>
                     <td>Mon - Thu:</td>
-                    <td>8am - 9pm</td>
+                    <td>8am - 4:30pm</td>
                   </tr>
                   <tr>
-                    <td>Fri - Sat:</td>
-                    <td>8am - 5pm</td>
+                    <td>Fri:</td>
+                    <td>8am - 12:30pm</td>
                   </tr>
                   <tr>
-                    <td>Sunday:</td>
+                    <td>Sat - Sun:</td>
                     <td>Closed</td>
                   </tr>
                 </tbody>

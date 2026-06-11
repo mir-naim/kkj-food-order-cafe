@@ -71,7 +71,7 @@ const OrderDetails = () => {
                 {shippingDetails}
               </p>
               <p>
-                <b>Amount:</b>{totalPrice} RM
+                <b>Amount:</b> RM{totalPrice}
               </p>
 
               <hr />
@@ -126,7 +126,7 @@ const OrderDetails = () => {
                       </div>
 
                       <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                        <p>{item.price} RM</p>
+                        <p>RM{item.price}</p>
                       </div>
 
                       <div className="col-4 col-lg-3 mt-4 mt-lg-0">

@@ -23,10 +23,11 @@ const ConfirmOrder = () => {
 
   //Calculate Order Prices
   const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
-  const shippingPrice = itemsPrice > 20 ? 0 : 2
-  const taxPrice = Number((0.05 * itemsPrice).toFixed(2))
-  const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2)
+  const shippingPrice = 0;
+  const taxPrice = 0;
+  const totalPrice = itemsPrice.toFixed(2);
 
+  
   const processToPayment = () => {
     const data = {
       itemsPrice: itemsPrice.toFixed(2),
@@ -109,7 +110,7 @@ const ConfirmOrder = () => {
 
                   <div className="col-4 col-lg-4 mt-4 mt-lg-0">
                     <p>
-                      {item.quantity} x {item.price} RM = <b>{item.quantity * item.price} RM</b>
+                      RM{item.quantity} x {item.price} RM = <b>{item.quantity * item.price}</b>
                     </p>
                   </div>
                 </div>
@@ -124,19 +125,19 @@ const ConfirmOrder = () => {
             <h4>Order Summary</h4>
             <hr />
             <p>
-              Subtotal: <span className="order-summary-values">{itemsPrice} RM</span>
+              Subtotal: <span className="order-summary-values">RM{itemsPrice}</span>
             </p>
             <p>
-              Shipping: <span className="order-summary-values">{shippingPrice} RM</span>
+              Shipping: <span className="order-summary-values">RM{shippingPrice}</span>
             </p>
             <p>
-              Tax: <span className="order-summary-values">{taxPrice} RM</span>
+              Tax: <span className="order-summary-values">RM{taxPrice}</span>
             </p>
 
             <hr />
 
             <p>
-              Total: <span className="order-summary-values">{totalPrice} RM</span>
+              Total: <span className="order-summary-values">RM{totalPrice}</span>
             </p>
 
             <hr />

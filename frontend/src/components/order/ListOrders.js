@@ -68,26 +68,32 @@ const ListOrders = () => {
         rows: []
     }
 
-      [...orders]
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .forEach(order => {
-        data.rows.push({
-            id:order._id,
-            numOfItems: order.orderItems.length,
-            amount: `RM${order.totalPrice}`,
-            status: order.orderStatus && String(order.orderStatus).includes('Delivered')
-            ? <p style={{color:'green'}}>{order.orderStatus}</p>
-            : <p style={{color:'red'}}>{order.orderStatus}</p>,
-            deliveredAt: order.deliveredAt ? new Date(order.deliveredAt).toLocaleString() : '-',
+     [...orders]
+  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+  .forEach(order => {
+    data.rows.push({
+      id: order._id,
+      numOfItems: order.orderItems.length,
+      amount: `RM${order.totalPrice}`,
+      status:
+        order.orderStatus &&
+        String(order.orderStatus).includes('Delivered') ? (
+          <p style={{ color: 'green' }}>{order.orderStatus}</p>
+        ) : (
+          <p style={{ color: 'red' }}>{order.orderStatus}</p>
+        ),
+      deliveredAt: order.deliveredAt
+        ? new Date(order.deliveredAt).toLocaleString()
+        : '-',
+      actions: (
+        <Link to={`/order/${order._id}`} className="btn btn-primary">
+          <i className="fa fa-eye"></i>
+        </Link>
+      )
+    });
+  });
 
-            actions:
-            <Link to={`/order/${order._id}`} className="btn btn-primary">
-                <i className="fa fa-eye"></i>
-            </Link>
-        })
-    })
-    return data;
-  }
+return data;
 
   return (
     <Fragment>

@@ -127,12 +127,6 @@ const ConfirmOrder = () => {
             <p>
               Subtotal: <span className="order-summary-values">RM{itemsPrice}</span>
             </p>
-            <p>
-              Shipping: <span className="order-summary-values">RM{shippingPrice}</span>
-            </p>
-            <p>
-              Tax: <span className="order-summary-values">RM{taxPrice}</span>
-            </p>
 
             <hr />
 

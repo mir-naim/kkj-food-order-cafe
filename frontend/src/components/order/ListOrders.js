@@ -68,7 +68,9 @@ const ListOrders = () => {
         rows: []
     }
 
-    orders.forEach(order => {
+      [...orders]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .forEach(order => {
         data.rows.push({
             id:order._id,
             numOfItems: order.orderItems.length,

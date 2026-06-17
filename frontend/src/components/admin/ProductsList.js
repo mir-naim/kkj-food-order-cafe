@@ -77,7 +77,12 @@ const ProductsList = () => {
       rows: [],
     };
     if (products) {
-      products.forEach((product) => {
+
+      const sortedproducts = [...orders].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  sortedproducts.forEach((order) => {
         data.rows.push({
           id: product._id,
           name: product.name,

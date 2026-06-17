@@ -83,10 +83,7 @@ const OrdersList = () => {
         rows: [],
       };
       if (orders) {
-
-          const sortedOrders = [...orders].sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
+          const sortedOrders = [...orders].reverse();
 
   sortedOrders.forEach((order) => {
           data.rows.push({

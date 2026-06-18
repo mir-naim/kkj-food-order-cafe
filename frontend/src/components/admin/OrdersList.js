@@ -128,13 +128,15 @@ const OrdersList = () => {
             {loading ? (
               <Loader />
             ) : (
-              <MDBDataTable
-                data={setOrders()}
-                className="px-3"
-                bordered
-                striped
-                hover
-              />
+              <div className="table-responsive">
+                  <MDBDataTable
+                    data={setOrders()}
+                    className="px-3"
+                    bordered
+                    striped
+                    hover
+                  />
+                </div>
             )}
           </Fragment>
         </div>

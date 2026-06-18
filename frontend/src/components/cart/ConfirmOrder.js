@@ -13,13 +13,13 @@ import { useNavigate } from "react-router-dom";
 import CheckoutSteps from "./CheckoutSteps";
 import axios from "axios";
 import api from "../../utils/api";
-
+import { useSelector, useDispatch } from "react-redux";
 
 const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate(); // Use useNavigate to get the navigation function instead of history
-
+  const dispatch = useDispatch(); // Use dispatch to remove cart items after order
 
   //Calculate Order Prices
   const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -41,30 +41,40 @@ const ConfirmOrder = () => {
 
   const cashOnDeliveryHandler = async () => {
 
-    const codPaymentId = `COD_${new Date().getFullYear()}${new Date().getMonth() + 1
-      }${new Date().getDate()}_${Date.now()}`;
+  const codPaymentId = `COD_${new Date().getFullYear()}${new Date().getMonth() + 1
+    }${new Date().getDate()}_${Date.now()}`;
 
-    const order = {
-      shippingInfo,
-      orderItems: cartItems,
-      itemsPrice,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-      paymentInfo: {
-        id: codPaymentId,
-        status: "COD"
-      }
-    };
-
-    try {
-      await api.post("/api/v1/order/new", order);
-
-      navigate("/success");
-    } catch (error) {
-      console.log(error);
+  const order = {
+    shippingInfo,
+    orderItems: cartItems,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+    paymentInfo: {
+      id: codPaymentId,
+      status: "COD"
     }
   };
+
+  try {
+    await api.post("/api/v1/order/new", order);
+
+    // Clear cart storage
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("shippingInfo");
+    sessionStorage.removeItem("orderInfo");
+
+    // Clear Redux cart state
+    dispatch({
+      type: "CLEAR_CART",
+    });
+
+    navigate("/success");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   return (
     <Fragment>

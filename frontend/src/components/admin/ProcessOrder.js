@@ -131,7 +131,9 @@ const ProcessOrder = () => {
             ) : (
               <div className="row d-flex justify-content-around">
                 <div className="col-12 col-lg-7 order-details">
-                  <h2 className="my-5">Order # {order._id}</h2>
+                 <h2 className="my-3 my-lg-5 text-break">
+                    Order # {order._id}
+                  </h2>
 
                   <h4 className="mb-4">Shipping Info</h4>
                   <p>
@@ -140,9 +142,8 @@ const ProcessOrder = () => {
                   <p>
                     <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
                   </p>
-                  <p className="mb-4">
-                    <b>Address:</b>
-                    {shippingDetails}
+                 <p className="mb-4 text-break">
+                    <b>Address:</b> {shippingDetails}
                   </p>
                   <p>
                     <b>Amount:</b>
@@ -198,38 +199,48 @@ const ProcessOrder = () => {
 
                   <hr />
                   <div className="cart-item my-1">
-                    {orderItems &&
-                      orderItems.map((item) => (
-                        <div key={item.product} className="row my-5">
-                          <div className="col-4 col-lg-2">
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              height="45"
-                              width="65"
-                            />
+                      {orderItems &&
+                        orderItems.map((item) => (
+                          <div
+                            key={item.product}
+                            className="row my-3 align-items-center border-bottom pb-3"
+                          >
+                            <div className="col-4 col-md-2">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="img-fluid rounded"
+                                style={{ maxHeight: "80px" }}
+                              />
+                            </div>
+                    
+                            <div className="col-8 col-md-4">
+                              <Link
+                                to={`/products/${item.product}`}
+                                className="text-break"
+                              >
+                                {item.name}
+                              </Link>
+                            </div>
+                    
+                            <div className="col-6 col-md-3 mt-2 mt-md-0">
+                              <p className="mb-0">
+                                <strong>Price:</strong> RM{item.price}
+                              </p>
+                            </div>
+                    
+                            <div className="col-6 col-md-3 mt-2 mt-md-0">
+                              <p className="mb-0">
+                                <strong>Qty:</strong> {item.quantity}
+                              </p>
+                            </div>
                           </div>
-
-                          <div className="col-5 col-lg-5">
-                            <Link to={`/products/${item.product}`}>
-                              {item.name}
-                            </Link>
-                          </div>
-
-                          <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                            <p>{item.price} RM</p>
-                          </div>
-
-                          <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                            <p>{item.quantity} Piece(s)</p>
-                          </div>
-                        </div>
-                      ))}
-                  </div>
+                        ))}
+                    </div>
                   <hr />
                 </div>
 
-                <div className="col-12 col-lg-3 mt-5">
+                <div className="col-12 col-lg-4 mt-4 mt-lg-5">
                   <h4 className="my-4">Status</h4>
 
                   <div className="form-group">
@@ -246,7 +257,7 @@ const ProcessOrder = () => {
                   </div>
 
                   <button
-                    className="btn btn-primary btn-block mt-3"
+                    className="btn btn-primary w-100 mt-3"
                     onClick={() => updateOrderHandler(order._id)}
                   >
                     Update Status
@@ -279,7 +290,7 @@ const ProcessOrder = () => {
                         </div>
 
                         <button
-                          className="btn btn-success btn-block mt-3"
+                          className="btn btn-success w-100 mt-3"
                           onClick={() => updateCashPaymentHandler(order._id)}
                           disabled={paymentInfo.status === "CASH PAID"}
                         >

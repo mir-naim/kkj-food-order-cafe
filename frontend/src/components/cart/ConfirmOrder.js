@@ -119,7 +119,7 @@ const ConfirmOrder = () => {
 
                   <div className="col-4 col-lg-4 mt-4 mt-lg-0">
                     <p>
-                      {item.quantity} x {item.price} RM = <b>RM{item.quantity * item.price}</b>
+                      {item.quantity} x RM{item.price} = <b>RM{item.quantity * item.price}</b>
                     </p>
                   </div>
                 </div>

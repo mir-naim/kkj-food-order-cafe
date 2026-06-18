@@ -55,9 +55,12 @@ const OrderDetails = () => {
         <Loader />
       ) : (
         <Fragment>
-          <div className="row d-flex justify-content-between">
-            <div className="col-12 col-lg-8 mt-5 order-details">
-              <h1 className="my-5">Order # {order._id}</h1>
+          <div className="container">
+            <div className="row">
+              <div className="col-12 mt-3 mt-lg-5 order-details">
+              <h3 className="my-3 my-lg-5 text-break">
+                Order # {order._id}
+              </h3>
 
               <h4 className="mb-4">User Info</h4>
               <p>
@@ -66,9 +69,8 @@ const OrderDetails = () => {
               <p>
                 <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
               </p>
-              <p className="mb-4">
-                <b>Address:</b>
-                {shippingDetails}
+              <p className="mb-4 text-break">
+                <b>Address:</b> {shippingDetails}
               </p>
               <p>
                 <b>Amount:</b> RM{totalPrice}
@@ -106,36 +108,47 @@ const OrderDetails = () => {
               <h4 className="my-4">Order Items:</h4>
 
               <hr />
-              <div className="cart-item my-1">
-                {orderItems &&
-                  orderItems.map((item) => (
-                    <div key={item.product} className="row my-5">
-                      <div className="col-4 col-lg-2">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          height="45"
-                          width="65"
-                        />
+                <div className="cart-item my-1">
+                  {orderItems &&
+                    orderItems.map((item) => (
+                      <div
+                        key={item.product}
+                        className="row my-3 align-items-center border-bottom pb-3"
+                      >
+                        <div className="col-4 col-md-2">
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="img-fluid rounded"
+                            style={{ maxHeight: "80px" }}
+                          />
+                        </div>
+                
+                        <div className="col-8 col-md-4">
+                          <Link
+                            to={`/products/${item.product}`}
+                            className="text-break"
+                          >
+                            {item.name}
+                          </Link>
+                        </div>
+                
+                        <div className="col-6 col-md-3 mt-2 mt-md-0">
+                          <p className="mb-0">
+                            <strong>Price:</strong> RM{item.price}
+                          </p>
+                        </div>
+                
+                        <div className="col-6 col-md-3 mt-2 mt-md-0">
+                          <p className="mb-0">
+                            <strong>Qty:</strong> {item.quantity}
+                          </p>
+                        </div>
                       </div>
-
-                      <div className="col-5 col-lg-5">
-                        <Link to={`/products/${item.product}`}>
-                          {item.name}
-                        </Link>
-                      </div>
-
-                      <div className="col-4 col-lg-2 mt-4 mt-lg-0">
-                        <p>RM{item.price}</p>
-                      </div>
-
-                      <div className="col-4 col-lg-3 mt-4 mt-lg-0">
-                        <p>{item.quantity} Piece(s)</p>
-                      </div>
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
               <hr />
+            </div>
             </div>
           </div>
         </Fragment>

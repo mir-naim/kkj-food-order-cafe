@@ -51,9 +51,11 @@ const Header = () => {
             <span className="ml-3" id="cart">
               Cart
             </span>
-            <span className="ml-1" id="cart_count">
-              {cartItems.length}
-            </span>
+            {cartItems.length > 0 && (
+              <span className="ml-1" id="cart_count">
+                {cartItems.length}
+              </span>
+            )}
           </Link>
 
           {user ? (

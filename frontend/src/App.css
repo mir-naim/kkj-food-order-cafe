@@ -35,6 +35,45 @@ body {
   }
 }
 
+
+/* Order Details Responsive */
+.order-details {
+  width: 100%;
+}
+
+.order-details img {
+  max-width: 100%;
+  height: auto;
+}
+
+.text-break {
+  word-break: break-word;
+}
+
+@media (max-width: 768px) {
+  .order-details {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .order-details h3 {
+    font-size: 1.3rem;
+  }
+
+  .order-details h4 {
+    font-size: 1.1rem;
+  }
+
+  .order-details p {
+    font-size: 14px;
+  }
+
+  .cart-item .row {
+    margin-bottom: 15px;
+  }
+}
+
+
 /* Scroll Bar */
 
 ::-webkit-scrollbar-track {

@@ -111,6 +111,16 @@ const Payment = () => {
       };
 
       await dispatch(createOrder(orderData));
+      
+      // Clear cart data from browser storage
+      localStorage.removeItem("cartItems");
+      localStorage.removeItem("shippingInfo");
+      sessionStorage.removeItem("orderInfo");
+      
+      // Clear Redux cart state
+      dispatch({
+        type: "CLEAR_CART",
+      });
 
       alert.success("Payment succeeded! Your order has been placed.");
 

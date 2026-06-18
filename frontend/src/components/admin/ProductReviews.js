@@ -156,13 +156,15 @@ const ProductReviews = () => {
             </div>
 
             {reviews && reviews.length > 0 ? (
-              <MDBDataTable
-                data={setReviews()}
-                className="px-3"
-                bordered
-                striped
-                hover
-              />
+              <div className="table-responsive">
+                <MDBDataTable
+                  data={setReviews()}
+                  className="px-3"
+                  bordered
+                  striped
+                  hover
+                />
+              </div>
             ) : (
               <p className="mt-5 text-center">No Reviews Found !</p>
             )}

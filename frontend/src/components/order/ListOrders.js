@@ -96,13 +96,15 @@ const ListOrders = () => {
       <MetaData title={"My Orders"} />
       <h1 className="my-5">My Orders</h1>
       {loading ? <Loader /> : (
-        <MDBDataTable 
-        data ={setOrders()}
-        className="px-3"
-        bordered
-        striped
-        hover
-        />
+        <div className="table-responsive">
+          <MDBDataTable
+            data={setOrders()}
+            className="px-3"
+            bordered
+            striped
+            hover
+          />
+        </div>
       )}
     </Fragment>
   );

@@ -131,13 +131,15 @@ useEffect(() => {
             {loading ? (
               <Loader />
             ) : (
-              <MDBDataTable
-                data={setUsers()}
-                className="px-3"
-                bordered
-                striped
-                hover
-              />
+              <div className="table-responsive">
+                <MDBDataTable
+                  data={setUsers()}
+                  className="px-3"
+                  bordered
+                  striped
+                  hover
+                />
+              </div>
             )}
           </Fragment>
         </div>

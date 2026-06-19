@@ -552,7 +552,7 @@ footer {
   display: flex;
   width: 100%;
   align-items: stretch;
-  min-height: 100vh;
+  min-height: auto;
   font-weight: normal;
 
   margin-top: 0;
@@ -572,20 +572,6 @@ footer {
   margin-left: -250px;
 }
 
-
-@media (max-width: 768px) {
-  #sidebar {
-    position: fixed;
-    left: -250px;
-    width: 250px;
-    height: 100vh;
-    z-index: 999;
-  }
-
-  #sidebar.active {
-    left: 0;
-  }
-}
 
 #sidebar .sidebar-header {
   padding: 20px;

@@ -89,9 +89,9 @@ const Shipping = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="postal_code_field">Postal Code</label>
+              <label htmlFor="postal_code_field">Student ID</label>
               <input
-                type="number"
+                type="text"
                 id="postal_code_field"
                 className="form-control"
                 value={postalCode}

@@ -147,7 +147,7 @@ const ProcessOrder = () => {
                   </p>
                   <p>
                     <b>Amount:</b>
-                    {totalPrice} RM
+                    RM{totalPrice}
                   </p>
 
                   <hr />

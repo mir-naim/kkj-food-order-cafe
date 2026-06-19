@@ -91,9 +91,13 @@ const ConfirmOrder = () => {
             <b>Phone:</b>
             {shippingInfo.phoneNo}
           </p>
+             <p>
+            <b>Student ID:</b>
+            {shippingInfo.postalCode}
+          </p>
           <p className="mb-4">
             <b>Address:</b>{" "}
-            {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`}
+            {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.country}`}
           </p>
 
           <hr />

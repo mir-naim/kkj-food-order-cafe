@@ -41,7 +41,7 @@ const OrderDetails = () => {
 
   const shippingDetails =
     shippingInfo &&
-    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.postalCode}, ${shippingInfo.country}`;
+    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.country}`;
 
   const isPaid =
   paymentInfo &&
@@ -68,6 +68,9 @@ const OrderDetails = () => {
               </p>
               <p>
                 <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
+              </p>
+  <p>
+                <b>Student ID:</b> {shippingInfo && shippingInfo.postalCode}
               </p>
               <p className="mb-4 text-break">
                 <b>Address:</b> {shippingDetails}

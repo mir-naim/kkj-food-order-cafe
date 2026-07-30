@@ -1,64 +1,86 @@
-//Programmer Name: Jagatiswary mageswaran & Veeshaal saravanan
+//Programmer Name: Jagatiswary Mageswaran & Veeshaal Saravanan
 //Program Name: Error Handling
-//Descrption: Handling all kinds of errors
+//Description: Handling all kinds of errors
 //First written on: 16 May, 2026
-//Edited on:
+//Edited on: 30 July, 2026
 
-
-const ErrorHandler = require('../utlis/errorHandler');
+const ErrorHandler = require("../utlis/errorHandler");
 
 module.exports = (err, req, res, next) => {
+
     err.statusCode = err.statusCode || 500;
 
-    if(process.env.NODE_ENV === 'DEVELOPMENT'){
-        res.status(err.statusCode).json({
-            success:false,
-            error:err,
-            errMessage: err.message,
-            stack: err.stack
-        })
+    let error = { ...err };
+    error.message = err.message;
+
+    // Invalid MongoDB ObjectId
+    if (err.name === "CastError") {
+        error = new ErrorHandler(
+            `Resource not found. Invalid: ${err.path}`,
+            400
+        );
     }
 
-    if(process.env.NODE_ENV === 'PRODUCTION'){
+    // Validation Error
+    if (err.name === "ValidationError") {
+        const message = Object.values(err.errors)
+            .map(val => val.message)
+            .join(", ");
 
-        let error ={...err}
-        error.message = err.message
-
-        //Wrong Mongoose Object ID Error
-        if(err.name === 'CastError'){
-            const message = `Resource not found. Invalid: ${err.path}`
-            error = new ErrorHandler(message, 400)
-        }
-
-        //Handling Mongoose Validation Error
-        if(err.name === 'ValidationError'){
-            const message = Object.values(err.errors).map(value => value.message);
-            error = new ErrorHandler(message, 400)
-        }
-
-        //handling  Mongoose duplicate key errors
-        if(err.code === 11000){
-            const message = `Duplicate ${Object.keys(err.keyValue)} entered`
-            error = new ErrorHandler(message, 400)
-        }
-
-        //Handling wrong JWT error
-        if(err.name === 'JsonwebTokenError'){
-            const message = 'JSON web token is invalid. Try again !!'
-            error = new ErrorHandler(message, 400)
-        }
-
-        //Handling Expired JWT error
-        if(err.name === 'TokenExpiredError'){
-            const message = 'JSON web token is expired. Try again !!'
-            error = new ErrorHandler(message, 400)
-        }
-
-        res.status(error.statusCode).json({
-            success: false,
-            message : err.message || 'Internal Server Error'
-        })
+        error = new ErrorHandler(message, 400);
     }
 
-    
-}
+    // Duplicate Key Error
+    if (err.code === 11000) {
+
+        const field = Object.keys(err.keyValue)[0];
+
+        let message = "Duplicate value entered.";
+
+        switch (field) {
+
+            case "studentId":
+                message = "This Student ID is already registered.";
+                break;
+
+            case "staffId":
+                message = "This Staff ID is already registered.";
+                break;
+
+            case "phoneNumber":
+                message = "This Phone Number is already registered.";
+                break;
+
+            case "email":
+                message = "This Email is already registered.";
+                break;
+
+            default:
+                message = `Duplicate ${field} entered.`;
+        }
+
+        error = new ErrorHandler(message, 400);
+    }
+
+    // Wrong JWT
+    if (err.name === "JsonWebTokenError") {
+        error = new ErrorHandler(
+            "JSON Web Token is invalid. Please try again.",
+            400
+        );
+    }
+
+    // Expired JWT
+    if (err.name === "TokenExpiredError") {
+        error = new ErrorHandler(
+            "JSON Web Token has expired. Please login again.",
+            400
+        );
+    }
+
+    res.status(error.statusCode || 500).json({
+        success: false,
+        message: error.message || "Internal Server Error"
+    });
+
+};

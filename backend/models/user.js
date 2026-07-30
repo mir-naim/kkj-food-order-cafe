@@ -2,7 +2,7 @@
 //Program Name: User schema
 //Descrption: Define user database schema
 //First written on: 20 May, 2026
-//Edited on:
+//Edited on: 30 July 2026
 
 
 const mongoose = require('mongoose');
@@ -12,10 +12,44 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
+    userType:{
+        type: String,
+        required: [true, 'Please select a User Type'],
+        enum: {
+            values: ['student', 'staff'],
+            message: 'User Type must be either student or staff'
+        }
+    },
+    studentId:{
+        type: String,
+        unique: true,
+        sparse: true, // allows many docs with no studentId (staff users) without violating uniqueness
+        match: [/^SK\d{8}$/, "Student ID must start with 'SK' followed by 8 digits"]
+    },
+    staffId:{
+        type: String,
+        unique: true,
+        sparse: true, // allows many docs with no staffId (student users) without violating uniqueness
+        match: [/^ST\d{6}$/, "Staff ID must start with 'ST' followed by 6 digits"]
+    },
     name:{
         type: String,
         required: [true, 'Please enter your name'],
         maxLength:[30, 'Your name cannot exceed 30 charecters']
+    },
+    phoneNumber:{
+        type: String,
+        required: [true, 'Please enter your phone number'],
+        unique: true,
+        match: [/^\d{10,11}$/, 'Please enter a valid phone number']
+    },
+    course:{
+        type: String,
+        required: [true, 'Please enter your Course (Kursus)']
+    },
+    level:{
+        type: String,
+        required: [true, 'Please select your Level (Tahap)']
     },
     email:{
         type: String,

@@ -1,18 +1,19 @@
-//Programmer Name: Jagatiswary mageswaran & Veeshaal saravanan
-//Program Name: Error Handler Class
-//Descrption: Error Handler Class
-//First written on: 30 May, 2026
-//Edited on:
+//Programmer Name: Jagatiswary Mageswaran & Veeshaal Saravanan
+//Program Name: Custom Error Handler
+//Description: Custom error handler class
+//First written on: 16 May, 2026
+//Edited on: 30 July, 2026
 
-//Error Handler Class
-class ErrorHandler extends Error{
-    constructor(message, statusCode){
+class ErrorHandler extends Error {
+
+    constructor(message, statusCode) {
         super(message);
-        this.statusCode = statusCode
 
-        Error.captureStackTrace(this, this.constructor)
+        this.statusCode = statusCode;
+
+        Error.captureStackTrace(this, this.constructor);
     }
-}
 
+}
 
 module.exports = ErrorHandler;

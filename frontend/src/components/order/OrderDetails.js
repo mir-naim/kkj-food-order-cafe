@@ -88,8 +88,6 @@ const OrderDetails = () => {
                     ? "PAID"
                     : paymentInfo?.status === "CASH PAID"
                     ? "CASH PAID"
-                    : paymentInfo?.status === "COD"
-                    ? "CASH ON DELIVERY"
                     : paymentInfo?.status === "CANCELLED"
                     ? "CANCELLED"
                     : "NOT PAID"}

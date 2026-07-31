@@ -52,7 +52,7 @@ const ConfirmOrder = () => {
     totalPrice,
     paymentInfo: {
       id: codPaymentId,
-      status: "COD"
+      status: "Cash Paid"
     }
   };
 

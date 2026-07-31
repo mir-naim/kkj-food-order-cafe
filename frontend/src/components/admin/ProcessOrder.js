@@ -178,7 +178,7 @@ const ProcessOrder = () => {
                   </p>
 
                   <hr />
-                  <h4 className="my-4">Stripe ID</h4>
+                  <h4 className="my-4">Payment ID</h4>
                   <p>
                     <b>{paymentInfo && paymentInfo.id}</b>
                   </p>

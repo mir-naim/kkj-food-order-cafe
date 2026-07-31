@@ -73,7 +73,7 @@ const ProcessOrder = () => {
     status
   };
 
-  if (paymentInfo?.status === "COD") {
+  if (paymentInfo?.status === "Cash Paid") {
 
     if (cashPayment === "Yes") {
       orderData.paymentStatus = "CASH PAID";
@@ -170,11 +170,9 @@ const ProcessOrder = () => {
                           ? "PAID"
                           : paymentStatus === "CASH PAID"
                             ? "CASH PAID"
-                            : paymentStatus === "COD"
-                              ? "CASH ON DELIVERY"
-                              : paymentStatus === "CANCELLED"
-                                ? "CANCELLED"
-                                : "NOT PAID"
+                            : paymentStatus === "CANCELLED"
+                              ? "CANCELLED"
+                              : "NOT PAID"
                       }
                     </b>
                   </p>
@@ -267,7 +265,7 @@ const ProcessOrder = () => {
 
                   {
                     paymentInfo &&
-                    paymentInfo.status === "COD" && (
+                    paymentInfo.status === "Cash Paid" && (
 
                       <>
                         <div className="form-group mt-4">

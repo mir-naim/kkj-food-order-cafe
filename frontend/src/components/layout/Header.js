@@ -12,6 +12,7 @@ import Search from "./Search";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import { logout } from "../../actions/userActions";
+import { removeAllItemsFromCart } from "../../actions/cartActions";
 
 import "../../App.css";
 
@@ -22,10 +23,11 @@ const Header = () => {
   const { user, loading } = useSelector((state) => state.auth);
   const {cartItems} = useSelector(state => state.cart)
 
-  const logoutHandler =() =>{
+  const logoutHandler = () => {
+    dispatch(removeAllItemsFromCart());
     dispatch(logout());
-    alert.success('Logged out Successfully')
-  }
+    alert.success("Logged out Successfully");
+  };
 
   return (
     <Fragment>

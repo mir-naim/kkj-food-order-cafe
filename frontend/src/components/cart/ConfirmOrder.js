@@ -40,7 +40,7 @@ const ConfirmOrder = () => {
 
   const cashOnDeliveryHandler = async () => {
 
-  const codPaymentId = `COD_${new Date().getFullYear()}${new Date().getMonth() + 1
+  const codPaymentId = `Cash_${new Date().getFullYear()}${new Date().getMonth() + 1
     }${new Date().getDate()}_${Date.now()}`;
 
   const order = {

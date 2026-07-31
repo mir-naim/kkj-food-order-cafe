@@ -162,7 +162,7 @@ const ConfirmOrder = () => {
               style={{ backgroundColor: "#007bff", borderColor: "#007bff" }}
               onClick={cashOnDeliveryHandler}
             >
-              Cash on Delivery
+              Cash Payment
             </button>
           </div>
         </div>

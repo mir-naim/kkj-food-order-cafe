@@ -182,14 +182,21 @@ const ProductDetails = () => {
                 </span>
               </div>
               <button
-                type="button"
-                id="cart_btn"
-                className="btn btn-primary d-inline ml-4"
-                disabled={product.stock ===0} 
-                onClick={addToCart}
-              >
-                Add to Cart
-              </button>
+              type="button"
+              id="cart_btn"
+              className="btn btn-primary d-inline ml-4"
+              disabled={!user || product.stock === 0}
+              onClick={user ? addToCart : undefined}
+            >
+              Add to Cart
+            </button>
+
+            {!user && (
+              <div className="alert alert-danger mt-4" role="alert">
+                Please register or log in before placing an order.
+              </div>
+            )}
+
 
               <hr />
 
@@ -220,7 +227,7 @@ const ProductDetails = () => {
                 data-target="#ratingModal"
                 onClick={setUserRatings}
               >Submit Your Review
-              </button> : <div className="alert alert-danger mt-5" type='alert'>Login to post your review</div>}
+              </button> : <div className="alert alert-danger mt-4" type='alert'>Login to post your review</div>}
                 
 
               <div className="row mt-2 mb-5">

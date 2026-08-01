@@ -319,6 +319,14 @@ footer {
   border-radius: 5rem;
 }
 
+#QRPayment_btn,
+.review-btn {
+  background-color: #00ca62;
+  border-color: #00ca62;
+  margin-top: 2rem;
+  border-radius: 5rem;
+}
+
 #view_order_details {
   background-color: #fa9c23;
   border-color: #fa9c23;

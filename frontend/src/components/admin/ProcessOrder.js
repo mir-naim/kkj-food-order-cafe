@@ -4,6 +4,7 @@
 //First written on: 8 October, 2023
 //Edited on: 07 January, 2024
 
+
 import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
@@ -72,10 +73,18 @@ const ProcessOrder = () => {
     status
   };
 
-  if (paymentInfo?.status === "Cash Paid") {
+  if (
+    paymentInfo?.status === "Cash Paid" ||
+    paymentInfo?.status === "QR Paid"
+    ) {
 
     if (cashPayment === "Yes") {
-      orderData.paymentStatus = "CASH PAID";
+
+    orderData.paymentStatus =
+        paymentInfo.status === "Cash Paid"
+            ? "CASH PAID"
+            : "QR PAID";
+
     }
 
     if (cashPayment === "No") {
@@ -87,16 +96,25 @@ const ProcessOrder = () => {
   dispatch(updateOrder(id, orderData));
 };
 
-  const updateCashPaymentHandler = (id) => {
+ const updateCashPaymentHandler = (id) => {
 
     const formData = new FormData();
 
     if (cashPayment === "Yes") {
-      formData.set("paymentStatus", "CASH PAID");
+
+      if (paymentInfo.status === "Cash Paid") {
+        formData.set("paymentStatus", "CASH PAID");
+      }
+
+      if (paymentInfo.status === "QR Paid") {
+        formData.set("paymentStatus", "QR PAID");
+      }
+
     }
 
     if (cashPayment === "No") {
       formData.set("paymentStatus", "CANCELLED");
+      formData.set("status", "Cancelled");
     }
 
     dispatch(updateOrder(id, formData));
@@ -110,9 +128,10 @@ const ProcessOrder = () => {
   const paymentStatus =
     paymentInfo && paymentInfo.status;
 
-  const isPaid =
+ const isPaid =
     paymentStatus === "succeeded" ||
-    paymentStatus === "CASH PAID";
+    paymentStatus === "CASH PAID" ||
+    paymentStatus === "QR PAID";
 
   return (
     <Fragment>
@@ -166,12 +185,14 @@ const ProcessOrder = () => {
                     <b>
                       {
                         paymentStatus === "succeeded"
-                          ? "PAID"
-                          : paymentStatus === "CASH PAID"
+                        ? "PAID"
+                        : paymentStatus === "CASH PAID"
                             ? "CASH PAID"
-                            : paymentStatus === "CANCELLED"
-                              ? "CANCELLED"
-                              : "NOT PAID"
+                            : paymentStatus === "QR PAID"
+                                ? "QR PAID"
+                                : paymentStatus === "CANCELLED"
+                                    ? "CANCELLED"
+                                    : "NOT PAID"
                       }
                     </b>
                   </p>
@@ -264,18 +285,31 @@ const ProcessOrder = () => {
 
                   {
                     paymentInfo &&
-                    paymentInfo.status === "Cash Paid" && (
+                    (
+                      paymentInfo.status === "Cash Paid" ||
+                      paymentInfo.status === "QR Paid"
+                    ) && (
 
                       <>
                         <div className="form-group mt-4">
 
-                          <h4 className="my-3">Payment via Cash</h4>
+                          
+                          <h4 className="my-3">
+                          {paymentInfo.status === "Cash Paid"
+                            ? "Payment via Cash"
+                            : paymentInfo.status === "QR Paid"
+                              ? "Payment via QR"
+                              : ""}
+                          </h4>
 
                           <select
                             className="form-control"
                             value={cashPayment}
                             onChange={(e) => setCashPayment(e.target.value)}
-                            disabled={paymentInfo.status === "CASH PAID"}
+                            disabled={
+                            paymentInfo.status === "CASH PAID" ||
+                            paymentInfo.status === "QR PAID"
+                            } 
                           >
 
                             <option value="">Select Option</option>
@@ -288,13 +322,20 @@ const ProcessOrder = () => {
 
                         </div>
 
-                        <button
-                          className="btn btn-success w-100 mt-3"
-                          onClick={() => updateCashPaymentHandler(order._id)}
-                          disabled={paymentInfo.status === "CASH PAID"}
-                        >
-                          Update Cash Payment
-                        </button>
+                          <button
+                            className="btn btn-success w-100 mt-3"
+                            onClick={() => updateCashPaymentHandler(order._id)}
+                            disabled={
+                              paymentInfo.status === "CASH PAID" ||
+                              paymentInfo.status === "QR PAID"
+                            }
+                          >
+                            {
+                              paymentInfo.status === "Cash Paid"
+                                ? "Update Cash Payment"
+                                : "Update QR Payment"
+                            }
+                          </button>
                       </>
                     )
                   }

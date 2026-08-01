@@ -4,6 +4,7 @@
 //First written on: 10 September, 2023
 //Edited on:
 
+
 import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../layout/Loader";
@@ -44,8 +45,11 @@ const OrderDetails = () => {
 
   const isPaid =
   paymentInfo &&
-  (paymentInfo.status === "succeeded" ||
-   paymentInfo.status === "CASH PAID");
+  (
+    paymentInfo.status === "succeeded" ||
+    paymentInfo.status === "CASH PAID" ||
+    paymentInfo.status === "QR PAID"
+  );
 
   return (
     <Fragment>
@@ -84,12 +88,14 @@ const OrderDetails = () => {
               <p className={isPaid ? "greenColor" : "redColor"}>
                 <b>
                   {paymentInfo?.status === "succeeded"
-                    ? "PAID"
-                    : paymentInfo?.status === "CASH PAID"
-                    ? "CASH PAID"
-                    : paymentInfo?.status === "CANCELLED"
-                    ? "CANCELLED"
-                    : "NOT PAID"}
+                  ? "PAID"
+                  : paymentInfo?.status === "CASH PAID"
+                  ? "CASH PAID"
+                  : paymentInfo?.status === "QR PAID"
+                  ? "QR PAID"
+                  : paymentInfo?.status === "CANCELLED"
+                  ? "CANCELLED"
+                  : "NOT PAID"}
               </b>
               </p>
 

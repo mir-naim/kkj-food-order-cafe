@@ -4,7 +4,8 @@
 //First written on: 24 September, 2023
 //Edited on:
 
-import React, { Fragment } from "react";
+
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import { useNavigate } from "react-router-dom";
@@ -13,17 +14,22 @@ import axios from "axios";
 import api from "../../utils/api";
 import { useSelector, useDispatch } from "react-redux";
 
+
+
 const ConfirmOrder = () => {
   const { cartItems, shippingInfo } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate(); // Use useNavigate to get the navigation function instead of history
   const dispatch = useDispatch(); // Use dispatch to remove cart items after order
+  
 
   //Calculate Order Prices
   const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
   const shippingPrice = 0;
   const taxPrice = 0;
   const totalPrice = itemsPrice.toFixed(2);
+
+  const [showQRPayment, setShowQRPayment] = useState(false);
 
   
   const processToPayment = () => {
@@ -72,6 +78,55 @@ const ConfirmOrder = () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const cancelQRPayment = () => {
+
+  // Clear the QR payment popup
+  setShowQRPayment(false);
+
+  // Return to Home page
+  navigate("/");
+
+};
+
+const completeQRPayment = async () => {
+
+    const qrPaymentId = `QR_${Date.now()}`;
+
+    const order = {
+        shippingInfo,
+        orderItems: cartItems,
+        itemsPrice,
+        taxPrice,
+        shippingPrice,
+        totalPrice,
+        paymentInfo: {
+            id: qrPaymentId,
+            status: "QR Paid"
+        }
+    };
+
+    try {
+
+        await api.post("/api/v1/order/new", order);
+
+        localStorage.removeItem("cartItems");
+        localStorage.removeItem("shippingInfo");
+        sessionStorage.removeItem("orderInfo");
+
+        dispatch({
+            type: "REMOVE_ALL_ITEMS_CART"
+        });
+
+        navigate("/success");
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
 };
 
   return (
@@ -163,6 +218,47 @@ const ConfirmOrder = () => {
             >
               Cash Payment
             </button>
+
+            <button
+              id="QRPayment_btn"
+              className="btn btn-info btn-block mt-3"
+              onClick={() => setShowQRPayment(true)}
+            >
+              QR Payment
+          </button>
+
+          {
+          showQRPayment && (
+
+          <div className="card mt-4 p-3 text-center">
+
+              <h5>Scan QR Code</h5>
+
+              <img
+                  src="/images/qr-payment.png"
+                  alt="QR Payment"
+                  className="img-fluid mx-auto"
+                  style={{maxWidth:"auto"}}
+              />
+
+              <button
+                  className="btn btn-danger mt-4"
+                  onClick={cancelQRPayment}
+              >
+                  Cancel Payment
+              </button>
+
+              <button
+                  className="btn btn-success mt-3"
+                  onClick={completeQRPayment}
+              >
+                  Complete Payment
+              </button>
+
+          </div>
+
+          )
+          }
           </div>
         </div>
       </div>

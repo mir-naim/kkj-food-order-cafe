@@ -74,23 +74,27 @@ exports.myOrders = catchAsyncErrors(async (req, res, next)=>{
 })
 
 
-//Get all orders => /api/v1/admin/orders
 
-exports.allOrders = catchAsyncErrors(async (req, res, next)=>{
+// Get all orders => /api/v1/admin/orders
 
-    const orders = await Order.find()
+exports.allOrders = catchAsyncErrors(async (req, res, next) => {
+
+    const orders = await Order.find().populate("user", "name email");
 
     let totalAmount = 0;
+
     orders.forEach(order => {
-        totalAmount += order.totalPrice
+        totalAmount += order.totalPrice;
     });
 
     res.status(200).json({
         success: true,
         totalAmount,
         orders
-    })
-})
+    });
+
+});
+
 
 
 //Update / Process order - ADMIN/STAFF => /api/v1/admin/order/:id

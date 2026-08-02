@@ -4,7 +4,8 @@
 //First written on: 09 September, 2023
 //Edited on: 07 January, 2024
 
-
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";
@@ -21,6 +22,7 @@ const ListOrders = () => {
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
+  const { user } = useSelector((state) => state.auth);
 
   useEffect(() => {
     dispatch(myOrders());
@@ -30,6 +32,56 @@ const ListOrders = () => {
       dispatch(clearErrors());
     }
   }, [dispatch, alert, error]);
+
+
+
+  const downloadOrder = (order) => {
+
+  const doc = new jsPDF();
+
+  doc.setFontSize(18);
+  doc.text("Cafe KKJ Order Receipt", 20, 20);
+  
+
+  doc.setFontSize(12);
+
+doc.text(`Customer Name: ${user ? user.name : ""}`, 20, 35);
+doc.text(`Phone Number: ${order.shippingInfo.phoneNo}`, 20, 45);
+
+doc.text(`Order ID: ${order._id}`, 20, 55);
+doc.text(`Date: ${new Date(order.createdAt).toLocaleString()}`, 20, 65);
+doc.text(`Order Status: ${order.orderStatus}`, 20, 75);
+doc.text(`Total Amount: RM${order.totalPrice}`, 20, 85);
+
+  const tableColumn = [
+    "Food",
+    "Price",
+    "Quantity",
+    "Subtotal"
+  ];
+
+  const tableRows = [];
+
+  order.orderItems.forEach(item => {
+
+    tableRows.push([
+      item.name,
+      `RM${item.price}`,
+      item.quantity,
+      `RM${item.price * item.quantity}`
+    ]);
+
+  });
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 80
+  });
+
+  doc.save(`Order_${order._id}.pdf`);
+
+};
 
   const setOrders = () => {
     const data = {
@@ -83,9 +135,23 @@ const ListOrders = () => {
             deliveredAt: order.deliveredAt ? new Date(order.deliveredAt).toLocaleString() : '-',
 
             actions:
-            <Link to={`/order/${order._id}`} className="btn btn-primary">
+            <>
+              <Link
+                to={`/order/${order._id}`}
+                className="btn btn-primary mr-2"
+                title="View Order"
+              >
                 <i className="fa fa-eye"></i>
-            </Link>
+              </Link>
+
+              <button
+                className="btn btn-success"
+                title="Download PDF"
+                onClick={() => downloadOrder(order)}
+              >
+                <i className="fa fa-download"></i>
+              </button>
+            </>
         })
     })
     return data;

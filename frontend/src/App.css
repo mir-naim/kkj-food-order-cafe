@@ -556,19 +556,24 @@ footer {
 
 /* Admin Sidebar */
 
+/* Admin Sidebar */
+
 .sidebar-wrapper {
   display: flex;
   width: 100%;
   align-items: stretch;
-  min-height: auto;
+  min-height: 100vh;   /* was: min-height: auto; */
   font-weight: normal;
 
   margin-top: 0;
-  height: 100%;
-  left: 0;
+  height: 100vh;        /* was: height: 100%; */
+  position: sticky;     /* keeps it pinned while content scrolls */
   top: 0;
+  left: 0;
   z-index: 10;
 }
+
+
 #sidebar {
   min-width: 100%;
   max-width: 100%;

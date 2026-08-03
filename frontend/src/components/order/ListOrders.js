@@ -4,7 +4,6 @@
 //First written on: 09 September, 2023
 //Edited on: 07 January, 2024
 
-
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import React, { Fragment, useEffect } from "react";
@@ -46,43 +45,44 @@ const ListOrders = () => {
 
   doc.setFontSize(12);
 
-doc.text(`Customer Name: ${user ? user.name : ""}`, 20, 35);
-doc.text(`Phone Number: ${order.shippingInfo.phoneNo}`, 20, 45);
+  doc.text(`Customer Name: ${user ? user.name : ""}`, 20, 35);
+  doc.text(`Student/Staff ID: ${order.shippingInfo.userId}`, 20, 45);
+  doc.text(`Phone Number: ${order.shippingInfo.phoneNo}`, 20, 55);
 
-doc.text(`Order ID: ${order._id}`, 20, 55);
-doc.text(`Date: ${new Date(order.createdAt).toLocaleString()}`, 20, 65);
-doc.text(`Order Status: ${order.orderStatus}`, 20, 75);
-doc.text(`Total Amount: RM${order.totalPrice}`, 20, 85);
+  doc.text(`Order ID: ${order._id}`, 20, 70);
+  doc.text(`Date: ${new Date(order.createdAt).toLocaleString()}`, 20, 80);
+  doc.text(`Order Status: ${order.orderStatus}`, 20, 90);
+  doc.text(`Total Amount: RM${order.totalPrice}`, 20, 100);
 
-  const tableColumn = [
-    "Food",
-    "Price",
-    "Quantity",
-    "Subtotal"
-  ];
+    const tableColumn = [
+      "Food",
+      "Price",
+      "Quantity",
+      "Subtotal"
+    ];
 
-  const tableRows = [];
+    const tableRows = [];
 
-  order.orderItems.forEach(item => {
+    order.orderItems.forEach(item => {
 
-    tableRows.push([
-      item.name,
-      `RM${item.price}`,
-      item.quantity,
-      `RM${item.price * item.quantity}`
-    ]);
+      tableRows.push([
+        item.name,
+        `RM${item.price}`,
+        item.quantity,
+        `RM${item.price * item.quantity}`
+      ]);
 
-  });
+    });
 
-  autoTable(doc, {
-    head: [tableColumn],
-    body: tableRows,
-    startY: 80
-  });
+    autoTable(doc, {
+      head: [tableColumn],
+      body: tableRows,
+      startY: 110
+    });
 
-  doc.save(`Order_${order._id}.pdf`);
+    doc.save(`Order_${order._id}.pdf`);
 
-};
+  };
 
   const setOrders = () => {
     const data = {

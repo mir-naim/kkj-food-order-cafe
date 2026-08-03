@@ -4,7 +4,6 @@
 //First written on: 23 October, 2023
 //Edited on:
 
-
 import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { MDBDataTable } from "mdbreact";

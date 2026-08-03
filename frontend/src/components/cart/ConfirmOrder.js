@@ -5,7 +5,6 @@
 //Edited on:
 
 
-
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import MetaData from "../layout/MetaData";
@@ -22,7 +21,7 @@ const ConfirmOrder = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate(); // Use useNavigate to get the navigation function instead of history
   const dispatch = useDispatch(); // Use dispatch to remove cart items after order
-  
+
 
   //Calculate Order Prices
   const itemsPrice = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
@@ -32,7 +31,7 @@ const ConfirmOrder = () => {
 
   const [showQRPayment, setShowQRPayment] = useState(false);
 
-  
+
   const processToPayment = () => {
     const data = {
       itemsPrice: itemsPrice.toFixed(2),
@@ -46,89 +45,97 @@ const ConfirmOrder = () => {
 
   const cashOnDeliveryHandler = async () => {
 
-  const codPaymentId = `Cash_${new Date().getFullYear()}${new Date().getMonth() + 1
-    }${new Date().getDate()}_${Date.now()}`;
+    const codPaymentId = `Cash_${new Date().getFullYear()}${new Date().getMonth() + 1
+      }${new Date().getDate()}_${Date.now()}`;
 
-  const order = {
-    shippingInfo,
-    orderItems: cartItems,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-    paymentInfo: {
-      id: codPaymentId,
-      status: "Cash Paid"
+    const order = {
+      shippingInfo: {
+      name: shippingInfo.name,
+      phoneNo: shippingInfo.phoneNo,
+      userId: shippingInfo.userId,
+      },
+      orderItems: cartItems,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+      paymentInfo: {
+        id: codPaymentId,
+        status: "Cash Paid"
+      }
+    };
+
+    try {
+      await api.post("/api/v1/order/new", order);
+
+      // Clear cart storage
+      localStorage.removeItem("cartItems");
+      localStorage.removeItem("shippingInfo");
+      sessionStorage.removeItem("orderInfo");
+
+      // Clear Redux cart state
+      dispatch({
+        type: "CLEAR_CART",
+      });
+
+      navigate("/success");
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  try {
-    await api.post("/api/v1/order/new", order);
+  const cancelQRPayment = () => {
 
-    // Clear cart storage
-    localStorage.removeItem("cartItems");
-    localStorage.removeItem("shippingInfo");
-    sessionStorage.removeItem("orderInfo");
+    // Clear the QR payment popup
+    setShowQRPayment(false);
 
-    // Clear Redux cart state
-    dispatch({
-      type: "CLEAR_CART",
-    });
+    // Return to Home page
+    navigate("/");
 
-    navigate("/success");
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
-const cancelQRPayment = () => {
-
-  // Clear the QR payment popup
-  setShowQRPayment(false);
-
-  // Return to Home page
-  navigate("/");
-
-};
-
-const completeQRPayment = async () => {
+  const completeQRPayment = async () => {
 
     const qrPaymentId = `QR_${Date.now()}`;
 
     const order = {
-        shippingInfo,
-        orderItems: cartItems,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-        paymentInfo: {
-            id: qrPaymentId,
-            status: "QR Paid"
-        }
+      shippingInfo: {
+      name: shippingInfo.name,
+      phoneNo: shippingInfo.phoneNo,
+      userId: shippingInfo.userId,
+      },
+      orderItems: cartItems,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+      paymentInfo: {
+        id: qrPaymentId,
+        status: "QR Paid"
+      }
     };
 
     try {
 
-        await api.post("/api/v1/order/new", order);
+      await api.post("/api/v1/order/new", order);
 
-        localStorage.removeItem("cartItems");
-        localStorage.removeItem("shippingInfo");
-        sessionStorage.removeItem("orderInfo");
+      localStorage.removeItem("cartItems");
+      localStorage.removeItem("shippingInfo");
+      sessionStorage.removeItem("orderInfo");
 
-        dispatch({
-            type: "REMOVE_ALL_ITEMS_CART"
-        });
+      dispatch({
+        type: "REMOVE_ALL_ITEMS_CART"
+      });
 
-        navigate("/success");
+      navigate("/success");
 
     } catch (error) {
 
-        console.log(error);
+      console.log(error);
 
     }
 
-};
+  };
 
   return (
     <Fragment>
@@ -137,24 +144,22 @@ const completeQRPayment = async () => {
 
       <div className="row d-flex justify-content-between">
         <div className="col-12 col-lg-8 mt-5 order-confirm">
-          <h4 className="mb-3">User Info</h4>
+          <h4 className="mb-3">User Information</h4>
+
           <p>
-            <b>Name:</b>
-            {user && user.name}
-          </p>
-          <p>
-            <b>Phone:</b>
-            {shippingInfo.phoneNo}
-          </p>
-             <p>
-            <b>Student ID:</b>
-            {shippingInfo.postalCode}
-          </p>
-          <p className="mb-4">
-            <b>Address:</b>{" "}
-            {`${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.country}`}
+            <b>Name:</b>{" "}
+            {shippingInfo.name}
           </p>
 
+          <p>
+            <b>Phone Number:</b>{" "}
+            {shippingInfo.phoneNo}
+          </p>
+
+          <p className="mb-4">
+            <b>Student ID / Staff ID:</b>{" "}
+            {shippingInfo.userId}
+          </p>
           <hr />
           <h4 className="mt-4">Your Cart Items:</h4>
 
@@ -226,40 +231,40 @@ const completeQRPayment = async () => {
               onClick={() => setShowQRPayment(true)}
             >
               QR Payment
-          </button>
+            </button>
 
-          {
-          showQRPayment && (
+            {
+              showQRPayment && (
 
-          <div className="card mt-4 p-3 text-center">
+                <div className="card mt-4 p-3 text-center">
 
-              <h5>Scan QR Code</h5>
+                  <h5>Scan QR Code</h5>
 
-              <img
-                  src="/images/qr-payment.png"
-                  alt="QR Payment"
-                  className="img-fluid mx-auto"
-                  style={{maxWidth:"auto"}}
-              />
+                  <img
+                    src="/images/qr-payment.png"
+                    alt="QR Payment"
+                    className="img-fluid mx-auto"
+                    style={{ maxWidth: "auto" }}
+                  />
 
-              <button
-                  className="btn btn-danger mt-4"
-                  onClick={cancelQRPayment}
-              >
-                  Cancel Payment
-              </button>
+                  <button
+                    className="btn btn-danger mt-4"
+                    onClick={cancelQRPayment}
+                  >
+                    Cancel Payment
+                  </button>
 
-              <button
-                  className="btn btn-success mt-3"
-                  onClick={completeQRPayment}
-              >
-                  Complete Payment
-              </button>
+                  <button
+                    className="btn btn-success mt-3"
+                    onClick={completeQRPayment}
+                  >
+                    Complete Payment
+                  </button>
 
-          </div>
+                </div>
 
-          )
-          }
+              )
+            }
           </div>
         </div>
       </div>

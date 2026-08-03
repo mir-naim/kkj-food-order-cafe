@@ -59,62 +59,84 @@ useEffect(() => {
   }, [user, navigate]);
 
 
-  const setUsers = () => {
-    const data = {
-      columns: [
-        {
-          label: "User ID",
-          field: "id",
-          sort: "asc",
-        },
-        {
-          label: "Name",
-          field: "name",
-          sort: "asc",
-        },
-        {
-          label: "Email",
-          field: "email",
-          sort: "asc",
-        },
-        {
-          label: "Role",
-          field: "role",
-          sort: "asc",
-        },
-        {
-          label: "Actions",
-          field: "actions",
-        },
-      ],
-      rows: [],
-    };
-    if (users) {
-      users.forEach((user) => {
-        data.rows.push({
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-
-          actions: (
-            <Fragment>
-              <Link
-                to={`/admin/user/${user._id}`}
-                className="btn btn-primary py-1 px-2"
-              >
-                <i className="fa fa-pencil"></i>
-              </Link>
-              <button className="btn btn-danger py-1 px-2 ml-2" onClick={() => deleteUserHandler(user._id)}>
-                <i className="fa fa-trash"></i>
-              </button>
-            </Fragment>
-          ),
-        });
-      });
-    }
-    return data;
+const setUsers = () => {
+  const data = {
+    columns: [
+      {
+        label: "User ID",
+        field: "id",
+        sort: "asc",
+      },
+      {
+        label: "Name",
+        field: "name",
+        sort: "asc",
+      },
+      {
+        label: "Email",
+        field: "email",
+        sort: "asc",
+      },
+      {
+        label: "Student ID / Staff ID",
+        field: "userId",
+        sort: "asc",
+      },
+      {
+        label: "Course",
+        field: "course",
+        sort: "asc",
+      },
+      {
+        label: "Role",
+        field: "role",
+        sort: "asc",
+      },
+      {
+        label: "Actions",
+        field: "actions",
+      },
+    ],
+    rows: [],
   };
+    if (users) {
+    users.forEach((user) => {
+      data.rows.push({
+        id: user._id,
+        name: user.name,
+        email: user.email,
+
+        // Show Student ID if available, otherwise Staff ID
+        userId: user.studentId || user.staffId || "-",
+
+        // Show course
+        course: user.course || "-",
+
+        role: user.role,
+
+        actions: (
+          <Fragment>
+            <Link
+              to={`/admin/user/${user._id}`}
+              className="btn btn-primary py-1 px-2"
+            >
+              <i className="fa fa-pencil"></i>
+            </Link>
+
+            <button
+              className="btn btn-danger py-1 px-2 ml-2"
+              onClick={() => deleteUserHandler(user._id)}
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+          </Fragment>
+        ),
+      });
+    });
+  }
+
+  return data;
+};
 
   return (
     <Fragment>

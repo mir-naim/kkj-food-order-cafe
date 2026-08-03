@@ -120,11 +120,6 @@ const ProcessOrder = () => {
     dispatch(updateOrder(id, formData));
   };
 
-  const shippingDetails =
-    shippingInfo &&
-    `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.country}`;
-
-
   const paymentStatus =
     paymentInfo && paymentInfo.status;
 
@@ -152,7 +147,7 @@ const ProcessOrder = () => {
                     Order # {order._id}
                   </h2>
 
-                  <h4 className="mb-4">Shipping Info</h4>
+                  <h4 className="mb-4">User Info</h4>
                   <p>
                     <b>Name:</b> {user && user.name}
                   </p>
@@ -160,11 +155,9 @@ const ProcessOrder = () => {
                     <b>Phone:</b> {shippingInfo && shippingInfo.phoneNo}
                   </p>
                   <p>
-                    <b>Student ID:</b> {shippingInfo && shippingInfo.postalCode}
+                    <b>Student/Staff ID:</b> {shippingInfo && shippingInfo.userId}
                   </p>
-                 <p className="mb-4 text-break">
-                    <b>Address:</b> {shippingDetails}
-                  </p>
+                 
                   <p>
                     <b>Amount:</b>
                     RM{totalPrice}

@@ -64,28 +64,37 @@ const OrdersList = () => {
 
     doc.setFontSize(12);
 
+    
+
     doc.text(`Customer Name: ${order.user ? order.user.name : "N/A"}`, 20, 35);
 
     doc.text(
-      `Phone Number: ${order.shippingInfo ? order.shippingInfo.phoneNo : "N/A"
+      `Student/Staff ID: ${order.shippingInfo ? order.shippingInfo.userId : "N/A"
       }`,
       20,
       45
     );
 
-    doc.text(`Order ID: ${order._id}`, 20, 55);
+    doc.text(
+      `Phone Number: ${order.shippingInfo ? order.shippingInfo.phoneNo : "N/A"
+      }`,
+      20,
+      55
+    );
+
+    doc.text(`Order ID: ${order._id}`, 20, 70);
 
     doc.text(
       `Date: ${new Date(order.createdAt).toLocaleString()}`,
       20,
-      65
+      80
     );
 
-    doc.text(`Order Status: ${order.orderStatus}`, 20, 75);
+    doc.text(`Order Status: ${order.orderStatus}`, 20, 90);
 
-    doc.text(`Payment Status: ${order.paymentInfo.status}`, 20, 85);
+    doc.text(`Payment Status: ${order.paymentInfo.status}`, 20, 100);
 
-    doc.text(`Total Amount: RM${order.totalPrice}`, 20, 95);
+    doc.text(`Total Amount: RM${order.totalPrice}`, 20, 110);
 
     const tableColumn = [
       "Food",
@@ -110,7 +119,7 @@ const OrdersList = () => {
     autoTable(doc, {
       head: [tableColumn],
       body: tableRows,
-      startY: 110,
+      startY: 120,
     });
 
     doc.save(`Order_${order._id}.pdf`);
